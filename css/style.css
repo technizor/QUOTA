@@ -1,4 +1,8 @@
-table th, table td {
+table.game-board {
+  background: #fff;
+  color: #000;
+}
+table.game-board th, table.game-board td {
   max-width: 64px;
   width: 64px;
   height: 64px;
@@ -9,7 +13,7 @@ table th, table td {
   border: solid 1px #000;
   text-align: center;
 }
-td > input.value, th > input.sum, th >input.control {
+table.game-board td > input.value, table.game-board th > input.sum, th >input.control {
   width: 100%;
   height: 100%;
   margin: 0;
@@ -18,41 +22,40 @@ td > input.value, th > input.sum, th >input.control {
   border: none;
   transition: all ease 0.5s;
 }
-td >input.value {
+table.game-board td >input.value {
   background: #bbb;
 }
-th >input.sum {
+table.game-board th >input.sum {
   background: #bbb;
 }
-td >input.value[status="-1"] {
+table.game-board td >input.value[status="-1"] {
   width: 18px;
 }
-td:not(:hover)>input.value[status="-1"] {
+table.game-board td:not(:hover)>input.value[status="-1"] {
   display: none;
 }
-td >input.value[status="0"] {
+table.game-board td >input.value[status="0"] {
   display: none;
 }
-td >input.value[status="1"] {
+table.game-board td >input.value[status="1"] {
   width: 100%;
 }
-td > input.value[player="1"] {
+table.game-board td > input.value[player="1"] {
   background: #ffbbbb;
 }
-td >input.value[player="2"] {
+table.game-board td >input.value[player="2"] {
   background: #bbbbff;
 }
-th >input.sum[status='-1'] {
+table.game-board th >input.sum[status='-1'] {
   background: #bbb;
 }
-th >input.sum[status='0'] {
+table.game-board th >input.sum[status='0'] {
   background: #777;
 }
-th >input.sum[status='1'] {
-}
-th >input.sum[status='1'][player="1"] {
+table.game-board th >input.sum[status='1'] {}
+table.game-board th >input.sum[status='1'][player="1"] {
   background: #ffbbbb;
 }
-th >input.sum[status='1'][player="2"] {
+table.game-board th >input.sum[status='1'][player="2"] {
   background: #bbbbff;
 }
