@@ -1,0 +1,62 @@
+table.game-board {
+  background: #fff;
+  color: #000;
+}
+table.game-board th, table td {
+  max-width: 64px;
+  width: 64px;
+  height: 64px;
+  max-height: 64px;
+  min-width: 64px;
+  min-height: 64px;
+  padding: 0;
+  border: solid 1px #000;
+  text-align: center;
+}
+table.game-board td > input.value, th > input.sum, th >input.control {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  border: none;
+  transition: all ease 0.5s;
+}
+table.game-board td >input.value {
+  background: #bbb;
+}
+table.game-board th >input.sum {
+  background: #bbb;
+}
+table.game-board td >input.value[status="-1"] {
+  width: 18px;
+}
+table.game-board td:not(:hover)>input.value[status="-1"] {
+  display: none;
+}
+table.game-board td >input.value[status="0"] {
+  display: none;
+}
+table.game-board td >input.value[status="1"] {
+  width: 100%;
+}
+table.game-board td > input.value[player="1"] {
+  background: #ffbbbb;
+}
+table.game-board td >input.value[player="2"] {
+  background: #bbbbff;
+}
+table.game-board th >input.sum[status='-1'] {
+  background: #bbb;
+}
+table.game-board th >input.sum[status='0'] {
+  background: #777;
+}
+table.game-board th >input.sum[status='1'] {
+}
+table.game-board th >input.sum[status='1'][player="1"] {
+  background: #ffbbbb;
+}
+table.game-board th >input.sum[status='1'][player="2"] {
+  background: #bbbbff;
+}
