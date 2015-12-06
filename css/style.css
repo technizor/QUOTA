@@ -1,0 +1,57 @@
+table th, table td {
+  max-width: 64px;
+  width: 64px;
+  height: 64px;
+  max-height: 64px;
+  min-width: 64px;
+  min-height: 64px;
+  padding: 0;
+  border: solid 1px #000;
+  text-align: center;
+}
+td > input.value, th > input.sum {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  border: none;
+}
+td >input.value {
+  background: #bbb;
+}
+th >input.sum {
+  background: #bbb;
+}
+td >input.value[status="3"] {
+  width: 18px;
+}
+td:not(:hover)>input.value[status="3"] {
+  display:none;
+}
+td >input.value[status="2"] {
+  width: 29px;
+}
+td >input.value[status="1"] {
+  width: 58px;
+}
+td >input.value[status="0"] {
+  display: none;
+}
+td >input.value[status="-1"][player="1"] {
+  width: 58px;
+  background: #ffbbbb;
+}
+td >input.value[status="-1"][player="2"] {
+  width: 58px;
+  background: #bbbbff;
+}
+th >input.sum[player="1"] {
+  background: #ffbbbb;
+}
+th >input.sum[player="2"] {
+  background: #bbbbff;
+}
+th >input.sum[player='0'] {
+  background: #777;
+}

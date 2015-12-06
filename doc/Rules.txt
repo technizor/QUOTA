@@ -1,0 +1,31 @@
+QUOTA
+Rules:
+  The game uses a 5x5 board, with 5 row and 5 column sums (QUOTAs) which are randomly generated.
+  Players take turns placing numbers from 1-3 onto the board.
+
+  If the total of the entries of a row/column are greater than or equal to the QUOTA,
+    then that row/column is considered 'finished'.
+    and no more moves can be made in that row/column.
+
+  If a player placed a number to finish that row
+  and if the total is equal to the sum,
+    Then the player is said to have met the QUOTA of that row/column.
+    That player gains points equal to the QUOTA.
+
+  Play continues until either all rows and columns are finished or there are no moves remaining.
+  Each player's scores are recorded.
+
+Terminology:
+  Game: A game is one play of a random board, which proceeds as described above.
+  Set: A set consists of 2 games on the same board, where each player goes first once.
+    A set is won if one player earned more total points across both games than the other.
+    If there is a tie in points, then the set is a tie.
+    3 points for a set win, 0 points for a set loss, and 1 point for a set tie.
+  Match: A match consists of 1 or more sets on different boards, where each player alternates
+    first game-first move possession.
+    A match is won if one player has more match points than the other player
+    and they have at least the number of match points required.
+    Recommended match point requirements:
+      Short: 3 points
+      Medium: 5 points
+      Long: 9 points

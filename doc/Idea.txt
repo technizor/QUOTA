@@ -1,0 +1,37 @@
+5 by 5 grid of playing space
+Each row and each column has a number assigned to it. (0-15)
+Players take turns placing 1, 2, 3 in a space.
+(You can theoretically automatically cross out any squares that are illegal no matter what is played or only allow legal moves)
+
+Legal moves are moves that leave it possible to: create the exact sums of the corresponding row and column.
+
+If a board has no moves left, then both players win points equal to the sum of the row/column sums they completed.
+
+Matches are a 6 games in length, with first turn alternating between players.
+If there is a tie after 6 games, then play a tiebreaker of 2 games.
+Repeat if necessary.
+
+ -----
+|□□□□□
+|□□□□□
+|□□□□□
+|□□□□□
+|□□□□□
+
+
+Number of Possible Boards:
+Rows/Columns on the same side are interchangeable. i.e. no permutations of vectors
+Sides are interchangeable. i.e. no permutations of sides
+0 same, 5 different: 16C5
+2 same, 3 different: 16*15C3
+3 same, 2 different: 16*15C2
+4 same, 1 different: 16*15
+5 same, 0 different: 16
+2 same, 2 same, 1 different: 16C2*14
+3 same, 2 same, 0 different: 16*15
+Total: 15504
+
+Number of boards:
+0 same, 2 different: 15504C2
+2 same, 0 different: 15504
+Total: 120194760
