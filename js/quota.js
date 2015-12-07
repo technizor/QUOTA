@@ -11,6 +11,12 @@ QUOTA = (function(base, $) {
     enumerable: true,
     configurable: true
   });
+  Object.defineProperty(base, 'ORDER', {
+    value: 'order',
+    writable: false,
+    enumerable: true,
+    configurable: true
+  });
   Object.defineProperty(base, 'ACTIVE', {
     value: -1,
     writable: false,
@@ -37,6 +43,7 @@ QUOTA = (function(base, $) {
   });
   const PLAYER = base.PLAYER;
   const STATUS = base.STATUS;
+  const ORDER = base.ORDER;
   const ACTIVE = base.ACTIVE;
   const BLOCKED = base.BLOCKED;
   const INACTIVE = base.INACTIVE;
@@ -140,8 +147,8 @@ QUOTA = (function(base, $) {
     for (var i = 0; i < SIZE; i++) {
       var cRow = selectRowSum(i);
       var cCol = selectColSum(i);
-      cRow.val(_game.rowTotal(i)+'/'+_game.rowSum(i));
-      cCol.val(_game.colTotal(i)+'/'+_game.colSum(i));
+      cRow.val(_game.rowTotal(i) + '/' + _game.rowSum(i));
+      cCol.val(_game.colTotal(i) + '/' + _game.colSum(i));
 
       var rd = _game.rowDiff(i);
       var cd = _game.colDiff(i);
@@ -164,12 +171,9 @@ QUOTA = (function(base, $) {
       }
 
       for (var j = 0; j < _game.SIZE; j++) {
-        var results = _game.checkMove(i, j);
-        var range = results * 3;
-
-        var cellValue = _game.boardState(i,j);
-        var cCell = selectBoardCell(i,j);
-        cCell.attr(STATUS, cellValue);
+        var cCell = selectBoardCell(i, j);
+        cCell.attr(STATUS, _game.boardState(i, j));
+        cCell.attr(ORDER, (_game.moveOrder(i, j) + 1));
       }
     }
   }
@@ -221,7 +225,8 @@ QUOTA = (function(base, $) {
         offset = 0;
       return Math.floor(Math.random() * range + offset);
     };
-    var _board, _rowSum, _colSum, _rowTotal, _colTotal, _rowEntry, _colEntry, _turn, _scores;
+    var _board, _rowSum, _colSum, _rowTotal, _colTotal, _rowEntry, _colEntry;
+    var _turn, _scores, _moveHistory, _moveOrder;
 
     restartGame = base.restartGame = function() {
       _board = createArray(SIZE, SIZE);
@@ -235,6 +240,8 @@ QUOTA = (function(base, $) {
       _scores = createArray(2);
       _scores[0] = 0;
       _scores[1] = 0;
+      _moveHistory = createArray(SIZE * SIZE, 3);
+      _moveOrder = createArray(SIZE, SIZE);
 
       for (var i = 0; i < SIZE; i++) {
         _colTotal[i] = _rowTotal[i] = _rowEntry[i] = _colEntry[i] = 0;
@@ -269,7 +276,7 @@ QUOTA = (function(base, $) {
       }
     };
 
-    // Mutators
+    // Game Actions
     move = base.move = function(row, col, val) {
       var check = checkMove(row, col);
       if (check) {
@@ -280,6 +287,10 @@ QUOTA = (function(base, $) {
         _colEntry[col]++;
         _scores[_turn % 2] += (rowDiff(row) === 0) ? _rowSum[row] : 0;
         _scores[_turn % 2] += (colDiff(col) === 0) ? _colSum[col] : 0;
+        _moveHistory[_turn][0] = row;
+        _moveHistory[_turn][1] = col;
+        _moveHistory[_turn][2] = val;
+        _moveOrder[row][col] = _turn;
         _turn++;
         validateBoard();
       }
@@ -342,6 +353,30 @@ QUOTA = (function(base, $) {
     currentTurn = base.currentTurn = function() {
       return _turn;
     };
+    moveHistory = base.moveHistory = function(turn) {
+      if (typeof turn !== 'undefined') {
+        var moveAction = [_moveHistory[turn][0], _moveHistory[turn][1], _moveHistory[turn][2]];
+        return _moveAction;
+      }
+      var moveList = createArray(SIZE * SIZE, 3);
+      for (var t = 0; t < SIZE * SIZE; t++) {
+        moveList[t][0] = _moveHistory[t][0];
+        moveList[t][1] = _moveHistory[t][1];
+        moveList[t][2] = _moveHistory[t][2];
+      }
+      return moveList;
+    }
+    moveOrder = base.moveOrder = function(row, col) {
+      if (typeof row !== 'undefined' && typeof col !== 'undefined') {
+        return _moveOrder[row][col];
+      }
+      var boardOrder = createArray(SIZE, SIZE);
+      for (var i = 0; i < SIZE; i++) {
+        for (var j = 0; j < SIZE; j++)
+          boardOrder[i][j] = _moveOrder[i][j];
+      }
+      return boardOrder;
+    }
 
     rowSum = base.rowSum = function(row) {
       if (typeof row !== 'undefined')
@@ -357,7 +392,7 @@ QUOTA = (function(base, $) {
       var sum = createArray(5);
       for (var j = 0; j < SIZE; j++)
         sum[j] = _colSum[j];
-      return sum
+      return sum;
     };
     rowTotal = base.rowTotal = function(row) {
       if (typeof row !== 'undefined')
