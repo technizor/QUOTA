@@ -112,8 +112,11 @@ QUOTA = (function(base, $) {
           selectBoardButton(i, j, v).attr(PLAYER, BLOCKED);
     }
   }
+  selectBoardCell = base.selectBoardCell = function(i, j) {
+    return $('.cell.r-' + (i + 1) + '.c-' + (j + 1));
+  };
   selectBoardButton = base.selectBoardButton = function(i, j, v) {
-    return $('input.value.r-' + (i + 1) + '.c-' + (j + 1) + '.v-' + (v));
+    return $('.cell.r-' + (i + 1) + '.c-' + (j + 1) + ' input.value.v-' + (v));
   };
   selectRowSum = base.selectRowSum = function(i) {
     return $('input.sum.r-' + (i + 1));
@@ -137,8 +140,8 @@ QUOTA = (function(base, $) {
     for (var i = 0; i < SIZE; i++) {
       var cRow = selectRowSum(i);
       var cCol = selectColSum(i);
-      cRow.val(_game.rowSum(i));
-      cCol.val(_game.colSum(i));
+      cRow.val(_game.rowTotal(i)+'/'+_game.rowSum(i));
+      cCol.val(_game.colTotal(i)+'/'+_game.colSum(i));
 
       var rd = _game.rowDiff(i);
       var cd = _game.colDiff(i);
@@ -163,17 +166,10 @@ QUOTA = (function(base, $) {
       for (var j = 0; j < _game.SIZE; j++) {
         var results = _game.checkMove(i, j);
         var range = results * 3;
-        for (var v = 1; v < 4; v++) {
-          var cValue = selectBoardButton(i, j, v);
-          var entryValue = _game.boardState(i, j);
-          if (entryValue === ACTIVE) {
-            cValue.attr(STATUS, ACTIVE);
-          } else if (entryValue !== v) {
-            cValue.attr(STATUS, BLOCKED);
-          } else {
-            cValue.attr(STATUS, INACTIVE);
-          }
-        }
+
+        var cellValue = _game.boardState(i,j);
+        var cCell = selectBoardCell(i,j);
+        cCell.attr(STATUS, cellValue);
       }
     }
   }
