@@ -1,5 +1,4 @@
 table.game-board {
-  background: #fff;
   color: #000;
 }
 table.game-board th, table.game-board td {
@@ -10,8 +9,16 @@ table.game-board th, table.game-board td {
   min-width: 64px;
   min-height: 64px;
   padding: 0;
+  background: #fff;
   border: solid 1px #000;
   text-align: center;
+  overflow: hidden;
+}
+table.game-board td {
+  font-size: 0;
+}
+table.game-board td>* {
+  font-size: 16px;
 }
 table.game-board td > input.value, table.game-board th > input.sum, th >input.control {
   width: 100%;
@@ -25,19 +32,30 @@ table.game-board td > input.value, table.game-board th > input.sum, th >input.co
 table.game-board td >input.value {
   background: #bbb;
 }
-table.game-board th >input.sum {
-  background: #bbb;
+table.game-board td.cell[status="-1"] >input.value {
+  width: calc(100% / 3);
 }
-table.game-board td >input.value[status="-1"] {
-  width: 18px;
+table.game-board td.cell[status="-1"]>input.value:hover {
+  background: #ddd;
 }
-table.game-board td:not(:hover)>input.value[status="-1"] {
+table.game-board td.cell[status="-1"]:not(:hover)>input.value {
   display: none;
 }
-table.game-board td >input.value[status="0"] {
-  display: none;
+table.game-board td.cell[status="-1"] {
+  background: #fff;
 }
-table.game-board td >input.value[status="1"] {
+table.game-board td.cell:not([status="-1"]) {
+  background: #555;
+}
+table.game-board td.cell[status="0"] >input.value,
+table.game-board td.cell[status="1"] >input.value:not(.v-1),
+table.game-board td.cell[status="2"] >input.value:not(.v-2),
+table.game-board td.cell[status="3"] >input.value:not(.v-3) {
+  width:0%;
+}
+table.game-board td.cell[status="1"] >input.value.v-1,
+table.game-board td.cell[status="2"] >input.value.v-2,
+table.game-board td.cell[status="3"] >input.value.v-3 {
   width: 100%;
 }
 table.game-board td > input.value[player="1"] {
@@ -45,6 +63,9 @@ table.game-board td > input.value[player="1"] {
 }
 table.game-board td >input.value[player="2"] {
   background: #bbbbff;
+}
+table.game-board th >input.sum {
+  background: #bbb;
 }
 table.game-board th >input.sum[status='-1'] {
   background: #bbb;
