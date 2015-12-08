@@ -5,6 +5,18 @@ QUOTA = (function(base, $) {
     enumerable: true,
     configurable: true
   });
+  Object.defineProperty(base, 'TURN', {
+    value: 'turn',
+    writable: false,
+    enumerable: true,
+    configurable: true
+  });
+  Object.defineProperty(base, 'SCORE', {
+    value: 'score',
+    writable: false,
+    enumerable: true,
+    configurable: true
+  });
   Object.defineProperty(base, 'STATUS', {
     value: 'status',
     writable: false,
@@ -13,6 +25,18 @@ QUOTA = (function(base, $) {
   });
   Object.defineProperty(base, 'ORDER', {
     value: 'order',
+    writable: false,
+    enumerable: true,
+    configurable: true
+  });
+  Object.defineProperty(base, 'TOTAL', {
+    value: 'total',
+    writable: false,
+    enumerable: true,
+    configurable: true
+  });
+  Object.defineProperty(base, 'SUM', {
+    value: 'sum',
     writable: false,
     enumerable: true,
     configurable: true
@@ -42,8 +66,12 @@ QUOTA = (function(base, $) {
     configurable: true
   });
   const PLAYER = base.PLAYER;
+  const TURN = base.TURN;
+  const SCORE = base.SCORE;
   const STATUS = base.STATUS;
   const ORDER = base.ORDER;
+  const TOTAL = base.TOTAL;
+  const SUM = base.SUM;
   const ACTIVE = base.ACTIVE;
   const BLOCKED = base.BLOCKED;
   const INACTIVE = base.INACTIVE;
@@ -53,19 +81,6 @@ QUOTA = (function(base, $) {
 
   initialize = base.initialize = function() {
     for (var i = 0; i < SIZE; i++) {
-      selectRowSum(i).click(
-        (function(row) {
-          return function() {
-            _game.printRow(row);
-          };
-        })(i));
-      selectColSum(i).click(
-        (function(col) {
-          return function() {
-            _game.printCol(col);
-          };
-        })(i));
-
       for (var j = 0; j < SIZE; j++) {
         for (var v = 1; v < 4; v++) {
           var cValue = selectBoardButton(i, j, v);
@@ -75,18 +90,13 @@ QUOTA = (function(base, $) {
                 var check = _game.move(row, col, val);
                 if (check) {
                   var cPlayer = _game.currentTurn() % 2 + 1;
-                  selectBoardButton(row, col, val).attr(PLAYER, cPlayer);
-
-                  if (_game.rowDiff(row) === 0) {
-                    selectRowSum(row).attr(PLAYER, cPlayer);
-                  } else {
-                    selectRowSum(row).attr(PLAYER, BLOCKED);
-                  }
-                  if (_game.colDiff(col) === 0) {
-                    selectColSum(col).attr(PLAYER, cPlayer);
-                  } else {
-                    selectColSum(col).attr(PLAYER, BLOCKED);
-                  }
+                  selectBoardCell(row, col).attr(PLAYER, cPlayer);
+                  var fRow = (_game.rowDiff(row) === 0) ? cPlayer : BLOCKED;
+                  var fCol = (_game.colDiff(col) === 0) ? cPlayer : BLOCKED;
+                  selectRowLabel(row).attr(PLAYER, fRow);
+                  selectRowSum(row).attr(PLAYER, fRow);
+                  selectColLabel(col).attr(PLAYER, fCol);
+                  selectColSum(col).attr(PLAYER, fCol);
                   updateBoard();
                 }
               };
@@ -110,45 +120,32 @@ QUOTA = (function(base, $) {
     resetColours();
     updateBoard();
   };
+
   resetColours = base.resetColours = function() {
     for (var i = 0; i < SIZE; i++) {
-      selectRowSum(i).attr('player', BLOCKED);
-      selectColSum(i).attr('player', BLOCKED);
+      selectRowLabel(i).attr(PLAYER, BLOCKED);
+      selectColLabel(i).attr(PLAYER, BLOCKED);
+      selectRowSum(i).attr(PLAYER, BLOCKED);
+      selectColSum(i).attr(PLAYER, BLOCKED);
       for (var j = 0; j < SIZE; j++)
-        for (var v = 1; v < 4; v++)
-          selectBoardButton(i, j, v).attr(PLAYER, BLOCKED);
+        selectBoardCell(i, j).attr(PLAYER, BLOCKED);
     }
-  }
-  selectBoardCell = base.selectBoardCell = function(i, j) {
-    return $('.cell.r-' + (i + 1) + '.c-' + (j + 1));
   };
-  selectBoardButton = base.selectBoardButton = function(i, j, v) {
-    return $('.cell.r-' + (i + 1) + '.c-' + (j + 1) + ' input.value.v-' + (v));
-  };
-  selectRowSum = base.selectRowSum = function(i) {
-    return $('input.sum.r-' + (i + 1));
-  };
-  selectColSum = base.selectColSum = function(j) {
-    return $('input.sum.c-' + (j + 1));
-  };
-
-  selectTurnDisplay = base.selectTurnDisplay = function() {
-    return $('span.display.turn');
-  }
-  selectScoreDisplay = base.selectScoreDisplay = function(p) {
-    return $('span.display.score.p-' + (p + 1));
-  }
 
   updateBoard = base.updateBoard = function() {
-    selectTurnDisplay().html((_game.currentTurn() + 1));
-    selectScoreDisplay(0).html(_game.score(0));
-    selectScoreDisplay(1).html(_game.score(1));
+    selectTurnDisplay().attr(TURN, (_game.currentTurn() + 1));
+    selectScoreDisplay(0).attr(SCORE, _game.score(0));
+    selectScoreDisplay(1).attr(SCORE, _game.score(1));
 
     for (var i = 0; i < SIZE; i++) {
       var cRow = selectRowSum(i);
+      var crLabel = selectRowLabel(i);
       var cCol = selectColSum(i);
-      cRow.val(_game.rowTotal(i) + '/' + _game.rowSum(i));
-      cCol.val(_game.colTotal(i) + '/' + _game.colSum(i));
+      var ccLabel = selectColLabel(i);
+      cRow.attr(TOTAL, _game.rowTotal(i));
+      cRow.attr(SUM, _game.rowSum(i));
+      cCol.attr(TOTAL, _game.colTotal(i));
+      cCol.attr(SUM, _game.colSum(i));
 
       var rd = _game.rowDiff(i);
       var cd = _game.colDiff(i);
@@ -157,17 +154,23 @@ QUOTA = (function(base, $) {
 
       if (rd === 0) {
         cRow.attr(STATUS, INACTIVE);
+        crLabel.attr(STATUS, INACTIVE);
       } else if (rd < 0 || rs === 0) {
         cRow.attr(STATUS, BLOCKED);
+        crLabel.attr(STATUS, BLOCKED);
       } else {
         cRow.attr(STATUS, ACTIVE);
+        crLabel.attr(STATUS, ACTIVE);
       }
       if (cd === 0) {
         cCol.attr(STATUS, INACTIVE);
+        ccLabel.attr(STATUS, INACTIVE);
       } else if (cd < 0 || cs === 0) {
         cCol.attr(STATUS, BLOCKED);
+        ccLabel.attr(STATUS, BLOCKED);
       } else {
         cCol.attr(STATUS, ACTIVE);
+        ccLabel.attr(STATUS, ACTIVE);
       }
 
       for (var j = 0; j < _game.SIZE; j++) {
@@ -176,7 +179,34 @@ QUOTA = (function(base, $) {
         cCell.attr(ORDER, (_game.moveOrder(i, j) + 1));
       }
     }
+  };
+
+  selectBoardCell = base.selectBoardCell = function(i, j) {
+    return $('.game-board .cell.r-' + (i + 1) + '.c-' + (j + 1));
+  };
+  selectBoardButton = base.selectBoardButton = function(i, j, v) {
+    return $('.game-board .cell.r-' + (i + 1) + '.c-' + (j + 1) + ' input.value.v-' + (v));
+  };
+  selectRowLabel = base.selectRowLabel = function(i) {
+    return $('.game-board .label.r-' + (i + 1));
+  };
+  selectColLabel = base.selectColLabel = function(j) {
+    return $('.game-board .label.c-' + (j + 1));
+  };
+  selectRowSum = base.selectRowSum = function(i) {
+    return $('.game-board .sum.r-' + (i + 1));
+  };
+  selectColSum = base.selectColSum = function(j) {
+    return $('.game-board .sum.c-' + (j + 1));
+  };
+
+  selectTurnDisplay = base.selectTurnDisplay = function() {
+    return $('.game-control .display.turn');
   }
+  selectScoreDisplay = base.selectScoreDisplay = function(p) {
+    return $('.game-control .display.score.p-' + (p + 1));
+  }
+
   GAME = base.GAME = function(size) {
     base = {};
 
@@ -365,7 +395,7 @@ QUOTA = (function(base, $) {
         moveList[t][2] = _moveHistory[t][2];
       }
       return moveList;
-    }
+    };
     moveOrder = base.moveOrder = function(row, col) {
       if (typeof row !== 'undefined' && typeof col !== 'undefined') {
         return _moveOrder[row][col];
@@ -376,7 +406,7 @@ QUOTA = (function(base, $) {
           boardOrder[i][j] = _moveOrder[i][j];
       }
       return boardOrder;
-    }
+    };
 
     rowSum = base.rowSum = function(row) {
       if (typeof row !== 'undefined')
@@ -432,19 +462,6 @@ QUOTA = (function(base, $) {
         return _scores[playerNum];
       var scores = [_scores[0], _scores[1]];
       return scores;
-    };
-
-    printRow = base.printRow = function(row) {
-      var out = 'Row ' + row + ':';
-      for (var j = 0; j < SIZE; j++)
-        out += ' ' + _board[row][j];
-      console.log(out);
-    };
-    printCol = base.printCol = function(col) {
-      var out = 'Col ' + col + ':';
-      for (var i = 0; i < SIZE; i++)
-        out += ' ' + _board[i][col];
-      console.log(out);
     };
 
     newGame();
