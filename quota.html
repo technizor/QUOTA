@@ -8,12 +8,10 @@
 </head>
 
 <body>
-  <table class="game-board">
-    <thead>
+  <table class="quota-game">
+    <tbody class="game-board">
       <tr>
-        <th>
-          /
-        </th>
+        <th />
         <th class="label c-1">
           A
         </th>
@@ -29,12 +27,8 @@
         <th class="label c-5">
           E
         </th>
-        <th>
-          \
-        </th>
+        <th />
       </tr>
-    </thead>
-    <tbody>
       <tr>
         <th class="label r-1">
           1
@@ -64,9 +58,7 @@
           <input class="value v-2" type="button" value="2" />
           <input class="value v-3" type="button" value="3" />
         </td>
-        <th class="cell r-1 c-5">
-          <input class="sum r-1" type="button" />
-        </th>
+        <th class="sum r-1" />
       </tr>
       <tr>
         <th class="label r-2">
@@ -97,9 +89,7 @@
           <input class="value v-2" type="button" value="2" />
           <input class="value v-3" type="button" value="3" />
         </td>
-        <th>
-          <input class="sum r-2" type="button" />
-        </th>
+        <th class="sum r-2" />
       </tr>
       <tr>
         <th class="label r-3">
@@ -130,9 +120,7 @@
           <input class="value v-2" type="button" value="2" />
           <input class="value v-3" type="button" value="3" />
         </td>
-        <th>
-          <input class="sum r-3" type="button" />
-        </th>
+        <th class="sum r-3" />
       </tr>
       <tr>
         <th class="label r-4">
@@ -163,9 +151,7 @@
           <input class="value v-2" type="button" value="2" />
           <input class="value v-3" type="button" value="3" />
         </td>
-        <th>
-          <input class="sum r-4" type="button" />
-        </th>
+        <th class="sum r-4" />
       </tr>
       <tr>
         <th class="label r-5">
@@ -196,59 +182,31 @@
           <input class="value v-2" type="button" value="2" />
           <input class="value v-3" type="button" value="3" />
         </td>
-        <th>
-          <input class="sum r-5" type="button" />
-        </th>
+        <th class="sum r-5" />
+      </tr>
+      <tr>
+        <th />
+        <th class="sum c-1" />
+        <th class="sum c-2" />
+        <th class="sum c-3" />
+        <th class="sum c-4" />
+        <th class="sum c-5" />
+        <th />
       </tr>
     </tbody>
-    <tfoot>
+    <tfoot class="game-control">
       <tr>
-        <th>
-          \
-        </th>
-        <th>
-          <input class="sum c-1" type="button" />
-        </th>
-        <th>
-          <input class="sum c-2" type="button" />
-        </th>
-        <th>
-          <input class="sum c-3" type="button" />
-        </th>
-        <th>
-          <input class="sum c-4" type="button" />
-        </th>
-        <th>
-          <input class="sum c-5" type="button" />
-        </th>
-        <th>
-          /
-        </th>
+        <th class="display score p-1" colspan="2" />
+        <th class="display turn" colspan="3" />
+        <th class="display score p-2" colspan="2" />
       </tr>
       <tr>
-        <th colspan="2">
-          P1 Score:
-          <span class="score p-1 display"></span>
+        <th class="control new-game" colspan="2">
+          <input class="control new-game" type="button" value="New Game" />
         </th>
-        <th colspan="3">
-          Turn:
-          <span class="turn display"></span>
-        </th>
-        <th colspan="2">
-          P2 Score:
-          <span class="score p-2 display"></span>
-        </th>
-      </tr>
-      <tr>
-        <th colspan="3">
-          <input class="control new-game" type="button" value="New Game"/>
-        </th>
-        <th colspan="1">
-          Game:
-          <span class="game display"></span>
-        </th>
-        <th colspan="3">
-          <input class="control restart-game" type="button" value="Restart"/>
+        <th class="display game" colspan="3" />
+        <th class="control restart-game" colspan="2">
+          <input class="control restart-game" type="button" value="Restart" />
         </th>
       </tr>
     </tfoot>

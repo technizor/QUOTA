@@ -1,12 +1,9 @@
-table.game-board {
+.quota-game {
   color: #000;
 }
-table.game-board th, table.game-board td {
-  max-width: 64px;
-  width: 64px;
+.game-control .display, .game-control .control, .game-board .label, .game-board .sum, .game-board .cell {
   height: 64px;
   max-height: 64px;
-  min-width: 64px;
   min-height: 64px;
   padding: 0;
   background: #fff;
@@ -14,14 +11,19 @@ table.game-board th, table.game-board td {
   text-align: center;
   overflow: hidden;
 }
-table.game-board td {
+.game-board .label, .game-board .sum, .game-board .cell {
+    max-width: 64px;
+    width: 64px;
+    min-width: 64px;
+}
+.game-board td {
   transition: all ease 0.5s;
   font-size: 0;
 }
-table.game-board td>* {
+.game-board td > * {
   font-size: 16px;
 }
-table.game-board td > input.value, table.game-board th > input.sum, th >input.control {
+.game-board td.cell > input.value, .game-board th > input.sum, .game-control th > input.control {
   width: 100%;
   height: 100%;
   margin: 0;
@@ -30,54 +32,68 @@ table.game-board td > input.value, table.game-board th > input.sum, th >input.co
   border: none;
   transition: all ease 0.5s;
 }
-table.game-board td.cell >input.value {
+.game-board td.cell > input.value {
   background: #bbb;
 }
-table.game-board td.cell:not([status="-1"]):not([status="0"])::before {
+.game-board td.cell:not([status="-1"]):not([status="0"])::before {
   font-size: 10px;
   content: attr(order);
   position: absolute;
 }
-table.game-board td.cell[status="-1"] >input.value {
+.game-board td.cell[status="-1"] > input.value {
   width: calc(100% / 3);
 }
-table.game-board td.cell[status="-1"]>input.value:hover {
-  background: #ddd;
-}
-table.game-board td.cell[status="-1"]:not(:hover)>input.value {
-  display: none;
-}
-table.game-board td.cell[status="-1"] {
-  background: #fff;
-}
-table.game-board td.cell:not([status="-1"]) {
-  background: #555;
-}
-table.game-board td.cell[status="0"] >input.value, table.game-board td.cell[status="1"] >input.value:not(.v-1), table.game-board td.cell[status="2"] >input.value:not(.v-2), table.game-board td.cell[status="3"] >input.value:not(.v-3) {
+.game-board td.cell[status="0"] > input.value, .game-board td.cell[status="1"] > input.value:not(.v-1), .game-board td.cell[status="2"] > input.value:not(.v-2), .game-board td.cell[status="3"] > input.value:not(.v-3) {
   width: 0%;
 }
-table.game-board td.cell[status="1"] >input.value.v-1, table.game-board td.cell[status="2"] >input.value.v-2, table.game-board td.cell[status="3"] >input.value.v-3 {
+.game-board td.cell[status="1"] > input.value.v-1, .game-board td.cell[status="2"] > input.value.v-2, .game-board td.cell[status="3"] > input.value.v-3 {
   width: 100%;
 }
-table.game-board td.cell > input.value[player="1"] {
-  background: #ffbbbb;
+.game-board td.cell[status="-1"]:not(:hover)>input.value {
+  display: none;
 }
-table.game-board td.cell >input.value[player="2"] {
-  background: #bbbbff;
+.game-board td.cell:not([status="-1"]), .game-board th.sum[status="0"], .game-board th.label[status="0"] {
+  background: #555;
 }
-table.game-board th >input.sum {
+.game-board td.cell[status="-1"] > input.value:hover {
+  background: #ddd;
+}
+.game-board td.cell[status="-1"] {
+  background: #fff;
+}
+.game-board td.cell[player="1"] > input.value, .game-board th.sum[status="1"][player="1"], .game-board th.label[status="1"][player="1"], .game-control th.display.score.p-1 {
+  background: #f77;
+}
+.game-board td.cell[player="2"] > input.value, .game-board th.sum[status="1"][player="2"], .game-board th.label[status="1"][player="2"], .game-control th.display.score.p-2 {
+  background: #77f;
+}
+.game-board th > input.sum, .game-board th > input.sum[status="-1"] {
   background: #bbb;
 }
-table.game-board th >input.sum[status='-1'] {
-  background: #bbb;
+.game-board th.sum {
+  border: solid 2px black;
 }
-table.game-board th >input.sum[status='0'] {
-  background: #777;
+.game-board th.sum::before {
+  content: attr(total) '/' attr(sum);
 }
-table.game-board th >input.sum[status='1'] {}
-table.game-board th >input.sum[status='1'][player="1"] {
-  background: #ffbbbb;
+.game-control th.display.score.p-1::before {
+  content: 'P1 Score: ';
 }
-table.game-board th >input.sum[status='1'][player="2"] {
-  background: #bbbbff;
+.game-control th.display.score.p-2::before {
+  content: 'P2 Score: ';
+}
+.game-control th.display.score::after {
+  content: attr(score);
+}
+.game-control th.display.turn::before {
+  content: 'Turn: ';
+}
+.game-control th.display.turn::after {
+  content: attr(turn);
+}
+.game-control th.display.game::before {
+  content: 'Game: ';
+}
+.game-control th.display.game::after {
+  content: attr(game);
 }
