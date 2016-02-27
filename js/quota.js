@@ -87,9 +87,9 @@ QUOTA = (function(base, $) {
           cValue.click(
             (function(row, col, val) {
               return function() {
+                var cPlayer = _game.currentTurn() % 2 + 1;
                 var check = _game.move(row, col, val);
                 if (check) {
-                  var cPlayer = _game.currentTurn() % 2 + 1;
                   selectBoardCell(row, col).attr(PLAYER, cPlayer);
                   var fRow = (_game.rowDiff(row) === 0) ? cPlayer : BLOCKED;
                   var fCol = (_game.colDiff(col) === 0) ? cPlayer : BLOCKED;
@@ -105,6 +105,9 @@ QUOTA = (function(base, $) {
       }
     }
 
+    $('input.config').click((function() {
+      $('.game-config').addClass('active');
+    }));
     $('input.new-game').click((function() {
       _game.newGame();
       resetColours();
