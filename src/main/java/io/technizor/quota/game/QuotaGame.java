@@ -30,7 +30,7 @@ public class QuotaGame {
 	private final int[] rowTotals;
 	private int spacesSet;
 
-	public QuotaGame(int[] rowQuotas, int[] colQuotas, QuotaPlayer[] players) {
+	protected QuotaGame(int[] rowQuotas, int[] colQuotas, QuotaPlayer[] players) {
 		this.numRows = rowQuotas.length;
 		this.numCols = colQuotas.length;
 		this.numPlayers = players.length;
